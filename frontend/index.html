@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PackSure AI - Metrology Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="logo-text">
+                    <h2>PackSure AI</h2>
+                    <span>METROLOGY PLATFORM</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-view="dashboard"><i class="fa-regular fa-clock"></i> Dashboard Overview</a>
+                <a href="#" class="nav-item" data-view="scan"><i class="fa-solid fa-arrow-up-from-bracket"></i> Scan Product <span class="badge">AI</span></a>
+                <a href="#" class="nav-item" data-view="sandbox"><i class="fa-solid fa-wand-magic-sparkles"></i> Label Sandbox</a>
+                <a href="#" class="nav-item" data-view="rules"><i class="fa-solid fa-database"></i> Rules Matrix</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <i class="fa-regular fa-circle-user"></i>
+                    <div>
+                        <p>Inspector Acer</p>
+                        <span>Local Metrology Dept</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <span>Standalone App:</span>
+                    <span class="tag-green">LOCAL-CLIENT</span>
+                </div>
+                <button class="btn-primary" id="top-new-inspection">
+                    <i class="fa-solid fa-plus"></i> New Inspection
+                </button>
+            </header>
+
+            <!-- VIEWS CONTAINER -->
+            <div class="dashboard-scroll">
+                
+                <!-- VIEW 1: DASHBOARD OVERVIEW -->
+                <div id="view-dashboard" class="app-view">
+                    <div class="page-title">
+                        <h1>Inspector Command Console</h1>
+                        <p>Packaged commodity compliance & HealthLens dashboard.</p>
+                    </div>
+
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>TOTAL SCANS</h3>
+                            <div class="value" id="stat-total">0</div>
+                            <div class="subtext text-green"><i class="fa-solid fa-check"></i> Standalone active</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>AVERAGE COMPLIANCE</h3>
+                            <div class="value text-green" id="stat-avg">0%</div>
+                            <div class="subtext">Rating across history</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>CRITICAL ALERTS</h3>
+                            <div class="value text-red" id="stat-failed">0</div>
+                            <div class="subtext text-red"><i class="fa-solid fa-circle"></i> Active violations found</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>AVERAGE HEALTH RATING</h3>
+                            <div class="value text-blue">0%</div>
+                            <div class="subtext">Nutritional average</div>
+                        </div>
+                    </div>
+
+                    <!-- Middle Section: Chart & Violations -->
+                    <div class="middle-grid">
+                        <div class="card chart-card">
+                            <h3>INSPECTION VOLUME & SCORE TRENDS</h3>
+                            <div class="chart-container">
+                                <canvas id="trendChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="card violations-card">
+                            <h3>COMMON VIOLATIONS</h3>
+                            <div class="violation-item">
+                                <div class="violation-info">
+                                    <span>No Consumer Contact</span>
+                                    <span class="text-red">45%</span>
+                                </div>
+                                <div class="progress-bar"><div class="fill bg-red" style="width: 45%;"></div></div>
+                            </div>
+                            <div class="violation-item">
+                                <div class="violation-info">
+                                    <span>MRP Stickers</span>
+                                    <span class="text-orange">30%</span>
+                                </div>
+                                <div class="progress-bar"><div class="fill bg-orange" style="width: 30%;"></div></div>
+                            </div>
+                            <div class="violation-item">
+                                <div class="violation-info">
+                                    <span>Missing Net Wt Units</span>
+                                    <span class="text-blue">20%</span>
+                                </div>
+                                <div class="progress-bar"><div class="fill bg-blue" style="width: 20%;"></div></div>
+                            </div>
+                            <div class="violation-footer">Recalculated across local log audits</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Table -->
+                    <div class="card table-card">
+                        <h3>RECENT PACKAGE AUDITS</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>TIMESTAMP</th>
+                                    <th>PRODUCT NAME</th>
+                                    <th>CATEGORY</th>
+                                    <th>STATUS</th>
+                                    <th>SCORE</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-body">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; color: var(--text-muted);">Loading data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: SCAN PRODUCT (4-PANEL UI) -->
+                <div id="view-scan" class="app-view" style="display: none;">
+                    <div class="scanner-header">
+                        <div>
+                            <h1>Package Scanner</h1>
+                            <p class="subtitle">Upload package panel photos or select a preloaded demo mockup.</p>
+                        </div>
+                        <div class="demo-mockups">
+                            <button class="demo-btn active">Demo 1 (Food)</button>
+                            <button class="demo-btn">Demo 2 (Cosmetics)</button>
+                            <button class="demo-btn">Demo 3 (Mismatch)</button>
+                        </div>
+                    </div>
+
+                    <div class="panel-grid">
+                        <div class="panel-card" data-panel="front">
+                            <span class="panel-name">FRONT PANEL</span>
+                            <div class="panel-upload-area">
+                                <div class="upload-icon-circle">
+                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                </div>
+                                <span class="upload-link">Click to upload</span>
+                            </div>
+                            <input type="file" accept="image/*" class="panel-input" hidden>
+                        </div>
+
+                        <div class="panel-card" data-panel="back">
+                            <span class="panel-name">BACK PANEL</span>
+                            <div class="panel-upload-area">
+                                <div class="upload-icon-circle">
+                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                </div>
+                                <span class="upload-link">Click to upload</span>
+                            </div>
+                            <input type="file" accept="image/*" class="panel-input" hidden>
+                        </div>
+
+                        <div class="panel-card" data-panel="left">
+                            <span class="panel-name">LEFT PANEL</span>
+                            <div class="panel-upload-area">
+                                <div class="upload-icon-circle">
+                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                </div>
+                                <span class="upload-link">Click to upload</span>
+                            </div>
+                            <input type="file" accept="image/*" class="panel-input" hidden>
+                        </div>
+
+                        <div class="panel-card" data-panel="right">
+                            <span class="panel-name">RIGHT PANEL</span>
+                            <div class="panel-upload-area">
+                                <div class="upload-icon-circle">
+                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                </div>
+                                <span class="upload-link">Click to upload</span>
+                            </div>
+                            <input type="file" accept="image/*" class="panel-input" hidden>
+                        </div>
+                    </div>
+
+                    <div class="audit-action-row">
+                        <button class="btn-audit" id="run-audit-btn">
+                            Run Client Compliance Audit <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="scan-result-container" style="margin-top: 24px;"></div>
+                </div>
+
+                <!-- VIEW 3: LABEL SANDBOX -->
+                <div id="view-sandbox" class="app-view" style="display: none;">
+                    <div class="page-title">
+                        <h1>Label Text Sandbox</h1>
+                        <p>Paste raw OCR or extracted text below to manually test compliance rule evaluations.</p>
+                    </div>
+                    <div class="card">
+                        <textarea id="sandbox-text" rows="8" placeholder="Paste product label details here... (e.g. MRP Rs. 50, Net Qty 100g, Manufacturer ABC)" style="width: 100%; background: var(--bg-main); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 8px; font-size: 14px;"></textarea>
+                        <button class="btn-primary" id="sandbox-eval-btn" style="margin-top: 16px;">Run Rule Evaluation</button>
+                    </div>
+                    <div id="sandbox-results" style="margin-top: 24px;"></div>
+                </div>
+
+                <!-- VIEW 4: RULES MATRIX -->
+                <div id="view-rules" class="app-view" style="display: none;">
+                    <div class="page-title">
+                        <h1>Legal Rules Matrix</h1>
+                        <p>Packaged Commodities Regulations Reference.</p>
+                    </div>
+                    <div class="card">
+                        <ul style="line-height: 2; padding-left: 20px; color: var(--text-muted);">
+                            <li><strong class="text-main">LEGAL-01:</strong> Mandatory declaration of Generic or Common Name.</li>
+                            <li><strong class="text-main">LEGAL-02:</strong> Name and full address of Manufacturer / Packer / Importer.</li>
+                            <li><strong class="text-main">LEGAL-03:</strong> Correct Net Quantity units (Weight, Measure, or Number).</li>
+                            <li><strong class="text-main">LEGAL-04:</strong> Maximum Retail Price (MRP) declaration including taxes.</li>
+                            <li><strong class="text-main">LEGAL-05:</strong> Consumer Care contact details / Helpline.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
