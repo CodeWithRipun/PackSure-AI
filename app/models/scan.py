@@ -21,5 +21,6 @@ class Scan(Base):
     extracted_json: Mapped[str] = mapped_column(Text, default="{}")
     results_json: Mapped[str] = mapped_column(Text, default="[]")
     score: Mapped[float] = mapped_column(Float, default=0)
-    status: Mapped[str] = mapped_column(String(32), default="NEEDS_REVIEW")
+    # Keep this human-readable value aligned with rule evaluation and the UI.
+    status: Mapped[str] = mapped_column(String(32), default="NEEDS REVIEW")
     report_path: Mapped[str | None] = mapped_column(String(500), nullable=True)

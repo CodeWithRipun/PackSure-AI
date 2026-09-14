@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -20,8 +20,8 @@
                     <span>METROLOGY PLATFORM</span>
                 </div>
             </div>
-            <nav class="sidebar-nav">
-                <a href="#" class="nav-item active" data-view="dashboard"><i class="fa-regular fa-clock"></i> Dashboard Overview</a>
+            <nav class="sidebar-nav" aria-label="Application navigation">
+                <a href="#" class="nav-item active" data-view="dashboard" aria-current="page"><i class="fa-regular fa-clock"></i> Dashboard Overview</a>
                 <a href="#" class="nav-item" data-view="scan"><i class="fa-solid fa-arrow-up-from-bracket"></i> Scan Product <span class="badge">AI</span></a>
                 <a href="#" class="nav-item" data-view="sandbox"><i class="fa-solid fa-wand-magic-sparkles"></i> Label Sandbox</a>
                 <a href="#" class="nav-item" data-view="rules"><i class="fa-solid fa-database"></i> Rules Matrix</a>
@@ -45,7 +45,7 @@
                     <span>Standalone App:</span>
                     <span class="tag-green">LOCAL-CLIENT</span>
                 </div>
-                <button class="btn-primary" id="top-new-inspection">
+                <button type="button" class="btn-primary" id="top-new-inspection">
                     <i class="fa-solid fa-plus"></i> New Inspection
                 </button>
             </header>
@@ -122,43 +122,47 @@
                     <!-- Recent Table -->
                     <div class="card table-card">
                         <h3>RECENT PACKAGE AUDITS</h3>
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>TIMESTAMP</th>
-                                    <th>PRODUCT NAME</th>
-                                    <th>CATEGORY</th>
-                                    <th>STATUS</th>
-                                    <th>SCORE</th>
-                                    <th>ACTION</th>
-                                </tr>
-                            </thead>
-                            <tbody id="history-body">
-                                <tr>
-                                    <td colspan="7" style="text-align: center; color: var(--text-muted);">Loading data...</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-scroll" tabindex="0">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>TIMESTAMP</th>
+                                        <th>PRODUCT NAME</th>
+                                        <th>CATEGORY</th>
+                                        <th>STATUS</th>
+                                        <th>SCORE</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-body">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center; color: var(--text-muted);">Loading data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- VIEW 2: SCAN PRODUCT (4-PANEL UI) -->
-                <div id="view-scan" class="app-view" style="display: none;">
+                <div id="view-scan" class="app-view" hidden>
                     <div class="scanner-header">
                         <div>
                             <h1>Package Scanner</h1>
-                            <p class="subtitle">Upload package panel photos or select a preloaded demo mockup.</p>
+                            <p class="subtitle">Upload one or more package panel photos, or select a preloaded demo mockup.</p>
                         </div>
-                        <div class="demo-mockups">
-                            <button class="demo-btn active">Demo 1 (Food)</button>
-                            <button class="demo-btn">Demo 2 (Cosmetics)</button>
-                            <button class="demo-btn">Demo 3 (Mismatch)</button>
+                        <div class="demo-mockups" aria-label="Demo package selection">
+                            <button type="button" class="demo-btn active" data-demo="food" aria-pressed="true">Demo 1 (Food)</button>
+                            <button type="button" class="demo-btn" data-demo="cosmetics" aria-pressed="false">Demo 2 (Cosmetics)</button>
+                            <button type="button" class="demo-btn" data-demo="mismatch" aria-pressed="false">Demo 3 (Mismatch)</button>
                         </div>
                     </div>
 
+                    <p class="scanner-help">Uploading a panel switches from demo mode; selecting a demo clears any selected images.</p>
+
                     <div class="panel-grid">
-                        <div class="panel-card" data-panel="front">
+                        <div class="panel-card" data-panel="front" role="button" tabindex="0" aria-label="Upload front panel image">
                             <span class="panel-name">FRONT PANEL</span>
                             <div class="panel-upload-area">
                                 <div class="upload-icon-circle">
@@ -166,10 +170,10 @@
                                 </div>
                                 <span class="upload-link">Click to upload</span>
                             </div>
-                            <input type="file" accept="image/*" class="panel-input" hidden>
+                            <input id="panel-front-input" type="file" accept="image/*" class="panel-input" hidden>
                         </div>
 
-                        <div class="panel-card" data-panel="back">
+                        <div class="panel-card" data-panel="back" role="button" tabindex="0" aria-label="Upload back panel image">
                             <span class="panel-name">BACK PANEL</span>
                             <div class="panel-upload-area">
                                 <div class="upload-icon-circle">
@@ -177,10 +181,10 @@
                                 </div>
                                 <span class="upload-link">Click to upload</span>
                             </div>
-                            <input type="file" accept="image/*" class="panel-input" hidden>
+                            <input id="panel-back-input" type="file" accept="image/*" class="panel-input" hidden>
                         </div>
 
-                        <div class="panel-card" data-panel="left">
+                        <div class="panel-card" data-panel="left" role="button" tabindex="0" aria-label="Upload left panel image">
                             <span class="panel-name">LEFT PANEL</span>
                             <div class="panel-upload-area">
                                 <div class="upload-icon-circle">
@@ -188,10 +192,10 @@
                                 </div>
                                 <span class="upload-link">Click to upload</span>
                             </div>
-                            <input type="file" accept="image/*" class="panel-input" hidden>
+                            <input id="panel-left-input" type="file" accept="image/*" class="panel-input" hidden>
                         </div>
 
-                        <div class="panel-card" data-panel="right">
+                        <div class="panel-card" data-panel="right" role="button" tabindex="0" aria-label="Upload right panel image">
                             <span class="panel-name">RIGHT PANEL</span>
                             <div class="panel-upload-area">
                                 <div class="upload-icon-circle">
@@ -199,34 +203,35 @@
                                 </div>
                                 <span class="upload-link">Click to upload</span>
                             </div>
-                            <input type="file" accept="image/*" class="panel-input" hidden>
+                            <input id="panel-right-input" type="file" accept="image/*" class="panel-input" hidden>
                         </div>
                     </div>
 
                     <div class="audit-action-row">
-                        <button class="btn-audit" id="run-audit-btn">
+                        <button type="button" class="btn-audit" id="run-audit-btn">
                             Run Client Compliance Audit <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
                     
-                    <div id="scan-result-container" style="margin-top: 24px;"></div>
+                    <div id="scan-result-container" class="result-container" aria-live="polite"></div>
                 </div>
 
                 <!-- VIEW 3: LABEL SANDBOX -->
-                <div id="view-sandbox" class="app-view" style="display: none;">
+                <div id="view-sandbox" class="app-view" hidden>
                     <div class="page-title">
                         <h1>Label Text Sandbox</h1>
                         <p>Paste raw OCR or extracted text below to manually test compliance rule evaluations.</p>
                     </div>
                     <div class="card">
-                        <textarea id="sandbox-text" rows="8" placeholder="Paste product label details here... (e.g. MRP Rs. 50, Net Qty 100g, Manufacturer ABC)" style="width: 100%; background: var(--bg-main); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 8px; font-size: 14px;"></textarea>
-                        <button class="btn-primary" id="sandbox-eval-btn" style="margin-top: 16px;">Run Rule Evaluation</button>
+                        <label class="visually-hidden" for="sandbox-text">Product label text</label>
+                        <textarea id="sandbox-text" rows="8" placeholder="Paste product label details here... (e.g. MRP Rs. 50, Net Qty 100g, Manufacturer ABC)"></textarea>
+                        <button type="button" class="btn-primary" id="sandbox-eval-btn">Run Rule Evaluation</button>
                     </div>
-                    <div id="sandbox-results" style="margin-top: 24px;"></div>
+                    <div id="sandbox-results" class="result-container" aria-live="polite"></div>
                 </div>
 
                 <!-- VIEW 4: RULES MATRIX -->
-                <div id="view-rules" class="app-view" style="display: none;">
+                <div id="view-rules" class="app-view" hidden>
                     <div class="page-title">
                         <h1>Legal Rules Matrix</h1>
                         <p>Packaged Commodities Regulations Reference.</p>
